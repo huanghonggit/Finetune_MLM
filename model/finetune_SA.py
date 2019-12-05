@@ -36,6 +36,3 @@ class BertForSA(nn.Module):
         for p in layers.parameters():
             if p.dim() > 1: nn.init.xavier_uniform_(p)
 
-
-        # for param in self.bert_model.parameters():
-        #     param.requires_grad = trainable

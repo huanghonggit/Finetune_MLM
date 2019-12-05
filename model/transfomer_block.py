@@ -14,26 +14,6 @@ from torch.autograd import Variable
 def clones(module, N):
     return nn.ModuleList([copy.deepcopy(module) for _ in range(N)])
 
-# def get_sinusoid_encoding_table(n_position, d_hid, padding_idx=None):
-#     ''' Sinusoid position encoding table '''
-#
-#     def cal_angle(position, hid_idx):
-#         return position / np.power(10000, 2 * (hid_idx // 2) / d_hid)
-#
-#     def get_posi_angle_vec(position):
-#         return [cal_angle(position, hid_j) for hid_j in range(d_hid)]
-#
-#     sinusoid_table = np.array([get_posi_angle_vec(pos_i) for pos_i in range(n_position)])
-#
-#     sinusoid_table[:, 0::2] = np.sin(sinusoid_table[:, 0::2])  # dim 2i
-#     sinusoid_table[:, 1::2] = np.cos(sinusoid_table[:, 1::2])  # dim 2i+1
-#
-#     if padding_idx is not None:
-#         # zero vector for padding dimension
-#         sinusoid_table[padding_idx] = 0.
-#
-#     return t.FloatTensor(sinusoid_table)
-
 
 class FFN(nn.Module):
     """
@@ -119,53 +99,6 @@ class Linear(nn.Module):
 
     def forward(self, x):
         return self.linear_layer(x)
-
-#
-# class EncoderPrenet(nn.Module):
-#     """
-#     Pre-network for Encoder consists of convolution networks.
-#     """
-#     def __init__(self, embedding_size, num_hidden,args):
-#         super(EncoderPrenet, self).__init__()
-#         self.embedding_size = embedding_size
-#         self.embed = nn.Embedding(args.char_nums, embedding_size, padding_idx=0)
-#
-#         self.conv1 = Conv(in_channels=embedding_size,
-#                           out_channels=num_hidden,
-#                           kernel_size=5,
-#                           padding=int(np.floor(5 / 2)),
-#                           w_init='relu')
-#         self.conv2 = Conv(in_channels=num_hidden,
-#                           out_channels=num_hidden,
-#                           kernel_size=5,
-#                           padding=int(np.floor(5 / 2)),
-#                           w_init='relu')
-#
-#         self.conv3 = Conv(in_channels=num_hidden,
-#                           out_channels=num_hidden,
-#                           kernel_size=5,
-#                           padding=int(np.floor(5 / 2)),
-#                           w_init='relu')
-#
-#         self.batch_norm1 = nn.BatchNorm1d(num_hidden)
-#         self.batch_norm2 = nn.BatchNorm1d(num_hidden)
-#         self.batch_norm3 = nn.BatchNorm1d(num_hidden)
-#
-#         self.dropout1 = nn.Dropout(p=0.2)
-#         self.dropout2 = nn.Dropout(p=0.2)
-#         self.dropout3 = nn.Dropout(p=0.2)
-#         self.projection = Linear(num_hidden, num_hidden)
-
-    # def forward(self, input_):
-    #     input_ = self.embed(input_)
-    #     input_ = input_.transpose(1, 2)
-    #     input_ = self.dropout1(self.batch_norm1(t.relu(self.conv1(input_))))   # 512-->256
-    #     input_ = self.dropout2(self.batch_norm2(t.relu(self.conv2(input_))))   # 256-->256
-    #     input_ = self.dropout3(self.batch_norm3(t.relu(self.conv3(input_))))   # 256-->256
-    #     input_ = input_.transpose(1, 2)
-    #     input_ = self.projection(input_)
-    #
-    #     return input_
 
 
 class EncoderPrenet(nn.Module):
